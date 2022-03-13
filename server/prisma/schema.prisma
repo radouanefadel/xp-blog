@@ -13,56 +13,56 @@ enum Role {
 }
 
 model User {
-  cuid				String						@id @default(cuid())
+  cuid				String            @id @default(cuid())
   firstName		String
   lastName		String
-  email				String						@unique
+  email				String            @unique
   password		String
-  role				Role							@default(AUTHOR)
+  role				Role              @default(AUTHOR)
   articles		Article[]
 
   @@map("users")
 }
 
 model Article {
-  cuid				String						@id @default(cuid())
-  title				String
-  content			String
-  author			User							@relation(fields: [authorId], references: [cuid])
-  authorId		String						@map("author_id")
-  comments		Comment[]
-  categories	ArticleCategory[]
-  createdAt		DateTime					@default(now())
-  updatedAt		DateTime					@updatedAt
+  cuid        String            @id @default(cuid())
+  title       String
+  content     String
+  author      User              @relation(fields: [authorId], references: [cuid])
+  authorId    String            @map("author_id")
+  comments    Comment[]
+  categories  ArticleCategory[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   @@map("articles")
 }
 
 model Comment {
-  cuid				String						@id @default(cuid())
-  email				String
-  content			String
-  article			Article						@relation(fields: [articleId], references: [cuid])
-  articleId		String						@map("article_id")
-  createdAt		DateTime					@default(now())
-  updatedAt		DateTime					@updatedAt
+  cuid        String            @id @default(cuid())
+  email       String
+  content     String
+  article     Article           @relation(fields: [articleId], references: [cuid])
+  articleId   String            @map("article_id")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
 
   @@map("comments")
 }
 
 model Category {
-  cuid				String						@id @default(cuid())
-  name				String
-  articles		ArticleCategory[]
+  cuid        String            @id @default(cuid())
+  name        String
+  articles    ArticleCategory[]
 
   @@map("categories")
 }
 
 model ArticleCategory {
-  article			Article						@relation(fields: [articleId], references: [cuid])
-  articleId		String						@map("article_id")
-  category		Category					@relation(fields: [categoryId], references: [cuid])
-  categoryId	String						@map("category_id")
+  article     Article           @relation(fields: [articleId], references: [cuid])
+  articleId   String            @map("article_id")
+  category    Category          @relation(fields: [categoryId], references: [cuid])
+  categoryId  String            @map("category_id")
 
   @@id([articleId, categoryId])
   @@map("article_categories")
