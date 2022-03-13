@@ -13,13 +13,13 @@ enum Role {
 }
 
 model User {
-  cuid				String            @id @default(cuid())
-  firstName		String
-  lastName		String
-  email				String            @unique
-  password		String
-  role				Role              @default(AUTHOR)
-  articles		Article[]
+  cuid        String            @id @default(cuid())
+  firstName   String
+  lastName    String
+  email       String            @unique
+  password    String
+  role        Role              @default(AUTHOR)
+  articles    Article[]
 
   @@map("users")
 }
