@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "dev-start": "nodemon app.js",
-    "migrate:mysql": "dotenv -e config/.env.dev -- npx prisma migrate dev --name create_xp_blog_db"
+    "migrate:mysql": "dotenv -e config/.env.dev -- npx prisma migrate dev --name create_xp_blog_db",
+    "db:push": "dotenv -e config/.env.dev -- npx prisma db push"
   },
   "keywords": [
     "blog"

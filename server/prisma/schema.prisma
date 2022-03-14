@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
@@ -28,7 +29,7 @@ model Article {
   cuid        String            @id @default(cuid())
   title       String
   content     String
-  author      User              @relation(fields: [authorId], references: [cuid])
+  author      User              @relation(fields: [authorId], references: [cuid], onDelete: Cascade)
   authorId    String            @map("author_id")
   comments    Comment[]
   categories  ArticleCategory[]
@@ -42,7 +43,7 @@ model Comment {
   cuid        String            @id @default(cuid())
   email       String
   content     String
-  article     Article           @relation(fields: [articleId], references: [cuid])
+  article     Article           @relation(fields: [articleId], references: [cuid], onDelete: Cascade)
   articleId   String            @map("article_id")
   createdAt   DateTime          @default(now())
   updatedAt   DateTime          @updatedAt
@@ -59,7 +60,7 @@ model Category {
 }
 
 model ArticleCategory {
-  article     Article           @relation(fields: [articleId], references: [cuid])
+  article     Article           @relation(fields: [articleId], references: [cuid], onDelete: Cascade)
   articleId   String            @map("article_id")
   category    Category          @relation(fields: [categoryId], references: [cuid])
   categoryId  String            @map("category_id")
