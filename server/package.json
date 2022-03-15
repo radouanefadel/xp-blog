@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "XP-Blog back-end project",
   "main": "app.js",
+  "prisma": {
+    "seed": "dotenv -e config/.env.dev -- node ./prisma/seeds/seed.js"
+  },
   "scripts": {
     "dev-start": "nodemon app.js",
     "migrate:mysql": "dotenv -e config/.env.dev -- npx prisma migrate dev --name create_xp_blog_db",
