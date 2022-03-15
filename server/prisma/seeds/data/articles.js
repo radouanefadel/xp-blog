@@ -5,8 +5,10 @@ const generateArticles = async (author) => Array(100)
 	.fill()
 	.map((_, i) => ({
 		title: faker.lorem.sentence(3),
-		content: faker.lorem.lines(8),
-		author,
+		content: faker.lorem.lines(2),
+		author: {
+			connect: { cuid: author.cuid, },
+		}
 	})
 );
 
