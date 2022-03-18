@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const Faker  = require('@faker-js/faker');
 const prismaClient = require('@prisma/client');
 const Data = require('./Data');
@@ -25,21 +26,38 @@ const deleteAll = async () => {
 	console.info('⏳ Deleting all Data. This may take a while...', '\n');
 	await deleteAllUsers();
 	await deleteAllCategories();
-	console.info('🗑️ ✅ All Data has been deleted successfully.', '\n\n');
+	console.info('🗑️ ✅ All Data has been deleted successfully.', '\n');
+	console.info('*'.repeat(100), '\n');
 };
 // #endregion
 
 // #region Seed operations
+const savedUsers = [];
+
 const saveUsers = async () => {
 	const users = Data.Users;
 	console.info('💾 ⏳ Saving users...');
 	for (let i = 0; i < users.length; i++) {
+		const userData = users[i];
 		await prisma.user.create({
-			data: users[i],
-		});
+			data: {
+				...userData,
+				password: await bcrypt.hashSync(userData.password, 10),
+			}
+		}).then(user => savedUsers.push({
+			name: `${user.firstName} ${user.lastName}`,
+			email: user.email,
+			password: userData.password,
+			role: user.role,
+		}));
 	}
-	console.info('💾 ✅  All users have been saved successfully.', '\n');
+	console.info('💾 ✅ All users have been saved successfully.', '\n');
 };
+
+const emojis = {
+	admin: '🔑',
+	stars: '⭐',
+}
 
 const saveCategories = async () => {
 	const categories = Data.Categories;
@@ -49,7 +67,7 @@ const saveCategories = async () => {
 			data: categories[i],
 		});
 	}
-	console.info('💾 ✅  All categories have been saved successfully.', '\n');
+	console.info('💾 ✅ All categories have been saved successfully.', '\n');
 };
 
 const saveArticlesAndComments = async () => {
@@ -104,15 +122,31 @@ const save = async () => {
 	await saveCategories();
 	await saveArticlesAndComments();
 	await saveComments();
-	console.info('💾 ✅ Data has been saved successfully.', '\n\n');
+	console.info('💾 ✅ Data has been saved successfully.', '\n');
+	console.info('*'.repeat(100));
 };
 
 // #endregion
+
+const showSavedUsers = () => {
+	console.log('\n', '🔑👤 SAVED USERS:', '\n');
+	console.table(
+		savedUsers.filter(user => user.role !== 'ADMIN'),
+		['name', 'email', 'password']
+	);
+	console.log('\n', '🔑👤 SAVED ADMINS:', '\n');
+	console.table(
+		savedUsers.filter(user => user.role === 'ADMIN'),
+		['name', 'email', 'password']
+	);
+	console.log('\n');
+};
 
 const main = async () => {
 	console.log('\n', '🚀 Data seeder started...', '\n\n');
 	await deleteAll();
 	await save();
+	showSavedUsers();
 };
 
 main()
