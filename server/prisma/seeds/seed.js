@@ -54,11 +54,6 @@ const saveUsers = async () => {
 	console.info('💾 ✅ All users have been saved successfully.', '\n');
 };
 
-const emojis = {
-	admin: '🔑',
-	stars: '⭐',
-}
-
 const saveCategories = async () => {
 	const categories = Data.Categories;
 	console.info('💾 ⏳ Saving categories...');
