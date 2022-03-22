@@ -4,6 +4,7 @@ const Routes = [
 	{ path: 'articles', router: require('./articles') },
 	{ path: 'categories', router: require('./categories') },
 	{ path: 'comments', router: require('./comments') },
+	{ path: 'users', router: require('./users') },
 ];
 
 const useRoutes = (app) => {
