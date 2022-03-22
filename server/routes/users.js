@@ -14,4 +14,17 @@ router.get('/', async (req, res) => {
 	}
 });
 
+router.get('/authors', async (req, res) => {
+	const users = await prisma.user.findMany({
+		where: { role: 'AUTHOR' },
+		select: {
+			cuid: true,
+			firstName: true,
+			lastName: true,
+			articles: true,
+		}
+	});
+	return res.json({ users });
+});
+
 module.exports = router;
