@@ -13,4 +13,27 @@ router.get('/', async (req, res) => {
 	return res.status(200).json({ articles });
 });
 
+router.get('/:cuid', async (req, res) => {
+	const { cuid } = req.params;
+	const article = await prisma.article.findUnique({
+		where: {
+			cuid,
+		},
+		include: {
+			categories: {
+				select: {
+					category: true,
+				},
+			},
+			comments: true,
+		}
+	});
+	if (!article) {
+		return res.status(404).json({
+			error: 'Article not found',
+		});
+	}
+	return res.status(200).json({ article });
+});
+
 module.exports = router;
