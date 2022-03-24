@@ -29,6 +29,7 @@ model Article {
   cuid        String            @id @default(cuid())
   title       String
   content     String
+  image       String
   author      User              @relation(fields: [authorId], references: [cuid], onDelete: Cascade)
   authorId    String            @map("author_id")
   comments    Comment[]

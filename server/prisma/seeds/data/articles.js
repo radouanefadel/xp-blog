@@ -6,6 +6,7 @@ const generateArticles = async (author) => Array(100)
 	.map((_, i) => ({
 		title: faker.lorem.sentence(3),
 		content: faker.lorem.lines(2),
+		image: faker.image.imageUrl(),
 		author: {
 			connect: { cuid: author.cuid, },
 		}
