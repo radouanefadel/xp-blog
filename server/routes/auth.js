@@ -35,10 +35,10 @@ router.post('/login', async (req, res) => {
 });
 
 router.post('/register',
-	body('email').trim().isEmail(),
-	body('password').isLength({ min: 8 }),
-	body('firstName').trim().isLength({ min: 2 }),
-	body('lastName').trim().isLength({ min: 2 }),
+	body('email').trim().isEmail().withMessage('Email is invalid'),
+	body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+	body('firstName').trim().isLength({ min: 2 }).withMessage('First name must be at least 2 characters long'),
+	body('lastName').trim().isLength({ min: 2 }).withMessage('Last name must be at least 2 characters long'),
 	async (req, res) => {
 		const { firstName, lastName, email, password } = req.body;
 		const errors = validationResult(req);
