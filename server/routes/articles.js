@@ -4,6 +4,9 @@ const router = express.Router();
 const prismaClient = require('@prisma/client');
 const prisma = new prismaClient.PrismaClient();
 
+const passport = require('passport');
+const verifyToken = passport.authenticate('jwt', { session: false });
+
 const { body, validationResult } = require('express-validator');
 
 router.get('/', async (req, res) => {
@@ -39,6 +42,7 @@ router.get('/:cuid', async (req, res) => {
 });
 
 router.post('/',
+	verifyToken,
 	body('title').trim().isLength({ min: 2 }).withMessage('Title must be at least 2 characters long'),
 	body('content').trim().isLength({ min: 50 }).withMessage('Content must be at least 50 characters long'),
 	body('image').trim().isURL().withMessage('Image must be a valid URL'),

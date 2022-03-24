@@ -1,6 +1,5 @@
-const passport = require('passport');
-
 const Routes = [
+	{ path: '', router: require('./auth') },
 	{ path: 'articles', router: require('./articles') },
 	{ path: 'categories', router: require('./categories') },
 	{ path: 'comments', router: require('./comments') },
@@ -12,12 +11,9 @@ const useRoutes = (app) => {
 		res.send('Welcome to XP-Blog!');
 	});
 	
-	app.use('/api/', require('./auth'));
-	
-	const verifyToken = passport.authenticate('jwt', { session: false });
 	Routes.forEach(route => {
 		const { path, router } = route;
-		app.use(`/api/${path}`, verifyToken, router);
+		app.use(`/api/${path}`, router);
 	});
 };
 

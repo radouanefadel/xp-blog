@@ -1,9 +1,13 @@
 const express = require('express');
 const router = express.Router();
+
 const prismaClient = require('@prisma/client');
 const prisma = new prismaClient.PrismaClient();
 
-router.get('/', async (req, res) => {
+const passport = require('passport');
+const verifyToken = passport.authenticate('jwt', { session: false });
+
+router.get('/', verifyToken, async (req, res) => {
 	if (req.isAuthenticated() && req.user.role === 'ADMIN') {
 		const users = await prisma.user.findMany();
 		res.json({ users });
@@ -14,7 +18,7 @@ router.get('/', async (req, res) => {
 	}
 });
 
-router.get('/authors', async (req, res) => {
+router.get('/authors', verifyToken, async (req, res) => {
 	const users = await prisma.user.findMany({
 		where: { role: 'AUTHOR' },
 		select: {
